@@ -27,10 +27,12 @@ Offers.prototype.init = async function () {
   this.router.get('/offers/:id', async (req, res, next) => {
     try {
       const result = await this.data.offers.getDetails(req.params.id);
-      res.json(result);
+      if (result) { return res.json(result); }
     } catch(err) {
-      next(err);
+      return next(err);
     }
+    res.status(404);
+    return res.send(null);
   });
 
   this.router.get('/offers', async (req, res, next) => {
